@@ -1,7 +1,7 @@
 /**
  * The handler for 'help' command.
  */
-export default class Ns_App_Back_Bot_Cmd_Help {
+export default class Dialog_Back_Bot_Cmd_Help {
     constructor() {
         return async (ctx) => {
             const from = ctx.message.from;

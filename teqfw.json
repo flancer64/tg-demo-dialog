@@ -1,13 +1,20 @@
 {
   "@teqfw/di": {
     "autoload": {
-      "ns": "Ns_App",
+      "ns": "Dialog",
       "path": "./src"
     },
     "replaces": {
       "Telegram_Bot_Back_Api_Setup": {
-        "back": "Ns_App_Back_Di_Replace_Telegram_Bot_Back_Api_Setup"
+        "back": "Dialog_Back_Bot_Setup"
       }
     }
+  },
+  "@teqfw/db": {
+    "client": "better-sqlite3",
+    "connection": {
+      "filename": "./var/data.db"
+    },
+    "useNullAsDefault": true
   }
 }

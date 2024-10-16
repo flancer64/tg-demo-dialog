@@ -1,21 +1,27 @@
 /**
  * The handler for 'start' command.
  */
-export default class Ns_App_Back_Bot_Cmd_Start {
-    constructor() {
+export default class Dialog_Back_Bot_Cmd_Start {
+    /**
+     * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
+     * @param {typeof Dialog_Back_Bot_Dialog} DLG
+     */
+    constructor(
+        {
+            TeqFw_Core_Shared_Api_Logger$$: logger,
+            Dialog_Back_Bot_Dialog$: DLG,
+        }
+    ) {
         return async (ctx) => {
-            const from = ctx.message.from;
-            const msgDef = `
-START
-`;
-            const msgRu = `
-Начало
-`;
-            const msg = (from.language_code === 'ru') ? msgRu : msgDef;
-            // https://core.telegram.org/bots/api#sendmessage
-            await ctx.reply(msg, {
-                parse_mode: 'MarkdownV2',
-            });
+            const from = ctx.from;
+            logger.info(`Command has been received from user '${from.username}' (id:${from.id})`);
+            try {
+                await ctx.conversation.enter(DLG.START);
+            } catch (e) {
+                await ctx.reply(`Error in processing: ${e}`);
+                logger.exception(e);
+            }
+
         };
     }
 }

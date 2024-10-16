@@ -1,7 +1,7 @@
 /**
  * The handler for 'settings' command.
  */
-export default class Ns_App_Back_Bot_Cmd_Settings {
+export default class Dialog_Back_Bot_Cmd_Settings {
     constructor() {
         return async (ctx) => {
             const from = ctx.message.from;
