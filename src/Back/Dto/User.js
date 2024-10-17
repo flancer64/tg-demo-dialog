@@ -7,19 +7,23 @@
  * @memberOf Dialog_Back_Dto_User
  */
 class Dto {
-    /**
-     * Telegram user ID.
-     * @type {number}
-     */
-    id;
-
+    /** @type {string} */
+    lang;
+    /** @type {string} */
+    nameFirst;
+    /** @type {string} */
+    nameLast;
     /**
      * Application user role (Customer | Vendor).
      * @type {string}
      * @see Dialog_Back_Enum_User_Role
      */
     role;
-
+    /**
+     * Telegram user ID.
+     * @type {number}
+     */
+    telegramId;
     /**
      * Telegram username.
      * @type {string}
@@ -52,8 +56,11 @@ export default class Dialog_Back_Dto_User {
             const res = Object.assign(new Dto(), data);
 
             // Cast known attributes
-            res.id = cast.int(data?.id);
+            res.lang = cast.string(data?.lang);
+            res.nameFirst = cast.string(data?.nameFirst);
+            res.nameLast = cast.string(data?.nameLast);
             res.role = cast.enum(data?.role, ROLE);
+            res.telegramId = cast.int(data?.telegramId);
             res.username = cast.string(data?.username);
 
             return res;

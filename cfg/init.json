@@ -5,6 +5,13 @@
   "@teqfw/core": {
     "devMode": true
   },
+  "@teqfw/db": {
+    "client": "better-sqlite3",
+    "connection": {
+      "filename": "./var/data.db"
+    },
+    "useNullAsDefault": true
+  },
   "@teqfw/web": {
     "server": {
       "port": 8080,

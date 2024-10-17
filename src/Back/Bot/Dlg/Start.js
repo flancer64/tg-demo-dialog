@@ -31,17 +31,25 @@ export default class Dialog_Back_Bot_Dlg_Start {
 
         return async (conversation, ctx) => {
             try {
-                const userId = ctx.from.id;
+                const telegramId = ctx.from.id;
                 const username = ctx.from.username;
                 let msg = `Hi @${username}!`;
 
                 // Check if the user already exists in the system
+                /** @type {Dialog_Back_Dto_User.Dto} */
                 let user = await conversation.external(
-                    () => modUser.read({id: userId})
+                    () => modUser.read({telegramId})
                 );
                 if (!user) {
+                    user = modUser.composeEntity();
+                    user.lang = ctx.from.language_code;
+                    user.nameFirst = ctx.from.first_name;
+                    user.nameLast = ctx.from.last_name;
+                    user.role = ROLE.CUSTOMER;
+                    user.telegramId = telegramId;
+                    user.username = username;
                     user = await conversation.external(
-                        () => modUser.create({id: userId, username, role: ROLE.CUSTOMER})
+                        () => modUser.create({dto: user})
                     );
                     msg += `\nYou're a new user and your current role is: '${ROLE_NAME[user.role]}'.`;
                 } else {
@@ -59,8 +67,9 @@ export default class Dialog_Back_Bot_Dlg_Start {
 
                     // If the selected role is different, update the user's role
                     if (roleSelected !== user.role) {
+                        user.role = roleSelected;
                         user = await conversation.external(
-                            () => modUser.update({id: userId, username, role: roleSelected})
+                            () => modUser.update({dto: user})
                         );
                         // TODO: change help & menu for the user
                     }

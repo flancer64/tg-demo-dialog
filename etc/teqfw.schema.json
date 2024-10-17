@@ -1,0 +1,59 @@
+{
+  "entity": {
+    "user": {
+      "comment": "The registry of the Telegram users.",
+      "attr": {
+        "id": {"type": "id"},
+        "telegram_id": {"type": "integer", "comment": "The reference to the user in Telegram."},
+        "username": {"type": "string", "comment": "User name from Telegram."},
+        "name_first": {"type": "string", "comment": "The first name from Telegram."},
+        "name_last": {"type": "string", "comment": "The last name from Telegram."},
+        "language": {"type": "string", "comment": "The language code from Telegram."},
+        "date_created": {
+          "comment": "Date-time when record was created.",
+          "type": "datetime",
+          "default": "current"
+        }
+      },
+      "index": {
+        "telegram_id": {"type": "unique", "attrs": ["telegram_id"]}
+      }
+    }
+  },
+  "package": {
+    "user": {
+      "entity": {
+        "role": {
+          "comment": "The role of the user.",
+          "attr": {
+            "user_ref": {"type": "ref"},
+            "role": {
+              "type": "enum",
+              "options": {
+                "values": [
+                  "CUSTOMER",
+                  "VENDOR"
+                ]
+              }
+            },
+            "date_updated": {
+              "comment": "Date-time when record was updated.",
+              "type": "datetime",
+              "default": "current"
+            }
+          },
+          "index": {
+            "pk": {"type": "primary", "attrs": ["user_ref"]}
+          },
+          "relation": {
+            "user": {
+              "attrs": ["user_ref"],
+              "ref": {"path": "/user", "attrs": ["id"]},
+              "action": {"delete": "cascade", "update": "cascade"}
+            }
+          }
+        }
+      }
+    }
+  }
+}
