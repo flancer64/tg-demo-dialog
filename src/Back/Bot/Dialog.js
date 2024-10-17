@@ -2,6 +2,7 @@
  * The codifier for bot conversations.
  */
 const Dialog_Back_Bot_Dialog = {
+    SERVICE_CREATE: 'dialogServiceCreate',
     START: 'dialogStart',
 };
 

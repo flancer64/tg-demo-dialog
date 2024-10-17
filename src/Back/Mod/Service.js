@@ -1,35 +1,62 @@
 /**
  * The model for Service to manipulate with data in storages.
+ * @implements TeqFw_Core_Shared_Api_Model
  */
 export default class Dialog_Back_Mod_Service {
     /**
-     * @param {Dialog_Back_Store_Mem_Service} store - in-memory service store instance
      * @param {TeqFw_Core_Shared_Api_Logger} logger - logger instance
+     * @param {TeqFw_Db_Back_RDb_IConnect} conn
+     * @param {Dialog_Back_Dto_Service} dtoService
+     * @param {Dialog_Back_Convert_Service} convService
+     * @param {Dialog_Back_Mod_Service_A_Create} aCreate
+     * @param {Dialog_Back_Mod_Service_A_List} aList
+     * @param {Dialog_Back_Mod_Service_A_Read} aRead
      */
     constructor(
         {
-            Dialog_Back_Store_Mem_Service$: store,
-            TeqFw_Core_Shared_Api_Logger$$: logger
+            TeqFw_Core_Shared_Api_Logger$$: logger,
+            TeqFw_Db_Back_RDb_IConnect$: conn,
+            Dialog_Back_Dto_Service$: dtoService,
+            Dialog_Back_Convert_Service$: convService,
+            Dialog_Back_Mod_Service_A_Create$: aCreate,
+            Dialog_Back_Mod_Service_A_List$: aList,
+            Dialog_Back_Mod_Service_A_Read$: aRead,
         }
     ) {
+
+        /**
+         * @type {function(Dialog_Back_Dto_Service.Dto=): Dialog_Back_Dto_Service.Dto}
+         */
+        this.composeEntity = dtoService.createDto;
+
+        /**
+         * @type {function(Dialog_Back_Dto_Service.Dto=): Dialog_Back_Dto_Service.Dto}
+         */
+        this.composeItem = dtoService.createDto;
+
+
         /**
          * Create a new service
-         * @param {Object} params - Service data
-         * @param {number} params.id - Service ID
-         * @param {string} params.name - Name of the service
-         * @param {string} params.description - Description of the service
-         * @param {number} params.duration - Duration of the service (in minutes)
-         * @param {string} params.address - Address where the service is provided
-         * @param {number} params.vendorId - ID of the vendor who created the service
-         * @returns {Dialog_Back_Dto_Service.Dto} - Created service DTO
+         * @param {Object} params
+         * @param {Dialog_Back_Dto_Service.Dto} params.dto
+         * @returns {Promise<Dialog_Back_Dto_Service.Dto>} - Created service DTO
          */
-        this.create = async function ({id, name, description, duration, address, vendorId}) {
+        this.create = async function ({dto}) {
+            let res;
+            const trx = await conn.startTransaction();
             try {
-                // Create new service in the in-memory store
-                const service = store.create({id, name, description, duration, address, vendorId});
-                logger.info(`Service ${name} created successfully.`);
-                return service;
+                const {dbService} = convService.share2rdb({service: dto});
+                const id = await aCreate.act({trx, dbService});
+                {
+                    const {dbService} = await aRead.act({trx, id});
+                    res = convService.rdb2share({dbService});
+                }
+                // Create new user in the store
+                await trx.commit();
+                logger.info(`Service with ID ${id} created successfully.`);
+                return res;
             } catch (error) {
+                await trx.rollback();
                 logger.error(`Error creating service: ${error.message}`);
                 throw error;
             }
@@ -37,20 +64,26 @@ export default class Dialog_Back_Mod_Service {
 
         /**
          * Read service data by ID
-         * @param {number} id - Service ID
-         * @returns {Dialog_Back_Dto_Service.Dto|null} - Service DTO or null if not found
+         * @param {Object} params
+         * @param {number} params.id - Service ID
+         * @returns {Promise<Dialog_Back_Dto_Service.Dto>}
          */
         this.read = async function ({id}) {
+            let res;
+            const trx = await conn.startTransaction();
             try {
-                const service = store.read(id);
-                if (service) {
-                    return service;
+                const {dbService} = await aRead.act({trx, id});
+                await trx.commit();
+                if (dbService) {
+                    res = convService.rdb2share({dbService});
+                    logger.info(`Service ${res.id} read successfully.`);
                 } else {
                     logger.info(`Service with ID ${id} not found.`);
-                    return null;
                 }
+                return res;
             } catch (error) {
-                logger.error(`Error reading service: ${error.message}`);
+                await trx.rollback();
+                logger.error(`Error reading service #${id}: ${error.message}`);
                 throw error;
             }
         };
@@ -104,44 +137,26 @@ export default class Dialog_Back_Mod_Service {
 
         /**
          * List all services
-         * @returns {Array<Dialog_Back_Dto_Service.Dto>} - List of all service DTOs
+         * @returns {Promise<Dialog_Back_Dto_Service.Dto[]>} - List of all service DTOs
          */
         this.list = async function () {
+            const res = [];
+            const trx = await conn.startTransaction();
             try {
-                return store.list();
+                const {items} = await aList.act({trx});
+                await trx.commit();
+                for (const dbService of items) {
+                    const dto = convService.rdb2share({dbService});
+                    res.push(dto);
+                }
+                return res;
             } catch (error) {
+                await trx.rollback();
                 logger.error(`Error listing services: ${error.message}`);
                 throw error;
             }
         };
 
-        /**
-         * Handle service creation or update
-         * @param {Object} params - Service data
-         * @param {number} params.id - Service ID
-         * @param {string} params.name - Name of the service
-         * @param {string} params.description - Description of the service
-         * @param {number} params.duration - Duration of the service (in minutes)
-         * @param {string} params.address - Address where the service is provided
-         * @param {number} params.vendorId - ID of the vendor who created the service
-         * @returns {Object} - Created or updated service DTO
-         */
-        this.handleServiceCommand = async function ({id, name, description, duration, address, vendorId}) {
-            try {
-                let service = await this.read({id});
-                if (service) {
-                    // Update existing service
-                    service = await this.update({id, name, description, duration, address});
-                } else {
-                    // If service not found, create a new one
-                    service = await this.create({id, name, description, duration, address, vendorId});
-                }
-                return service;
-            } catch (error) {
-                logger.error(`Error handling service command: ${error.message}`);
-                throw error;
-            }
-        };
     }
 }
 

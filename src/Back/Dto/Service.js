@@ -1,5 +1,5 @@
 /**
- * The service data structure.
+ * The service data structure for Business Logic (Domain DTO).
  */
 
 // MODULE'S CLASSES
@@ -8,16 +8,22 @@
  */
 class Dto {
     /**
-     * Service ID.
-     * @type {number}
-     */
-    id;
-
-    /**
-     * Service name.
+     * Service address.
      * @type {string}
      */
-    name;
+    address;
+
+    /**
+     * Service creation date.
+     * @type {Date}
+     */
+    dateCreated;
+
+    /**
+     * Last update date for the service.
+     * @type {Date}
+     */
+    dateUpdated;
 
     /**
      * Service description.
@@ -32,28 +38,22 @@ class Dto {
     duration;
 
     /**
-     * Service address.
+     * Service ID.
+     * @type {number}
+     */
+    id;
+
+    /**
+     * Service name.
      * @type {string}
      */
-    address;
+    name;
 
     /**
      * Vendor ID (who created the service).
      * @type {number}
      */
-    vendorId;
-
-    /**
-     * Service creation date.
-     * @type {Date}
-     */
-    createdAt;
-
-    /**
-     * Last update date for the service.
-     * @type {Date}
-     */
-    updatedAt;
+    userId;
 }
 
 /**
@@ -79,17 +79,16 @@ export default class Dialog_Back_Dto_Service {
             const res = Object.assign(new Dto(), data);
 
             // Cast known attributes
-            res.id = cast.int(data?.id);
-            res.name = cast.string(data?.name);
+            res.address = cast.string(data?.address);
+            res.dateCreated = cast.date(data?.dateCreated);
+            res.dateUpdated = cast.date(data?.dateUpdated);
             res.description = cast.string(data?.description);
             res.duration = cast.int(data?.duration);
-            res.address = cast.string(data?.address);
-            res.vendorId = cast.int(data?.vendorId);
-            res.createdAt = cast.date(data?.createdAt);
-            res.updatedAt = cast.date(data?.updatedAt);
+            res.id = cast.int(data?.id);
+            res.name = cast.string(data?.name);
+            res.userId = cast.int(data?.userId);
 
             return res;
         };
     }
 }
-

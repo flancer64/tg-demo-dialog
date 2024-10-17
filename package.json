@@ -31,5 +31,8 @@
     "@teqfw/db": "^0.22.1",
     "better-sqlite3": "^11.3.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@teqfw/test": "^0.20.1",
+    "mocha": "^10.7.3"
+  }
 }

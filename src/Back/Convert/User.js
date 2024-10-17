@@ -28,6 +28,7 @@ export default class Dialog_Back_Convert_User {
          */
         this.rdb2share = function ({dbUser, dbUserRole}) {
             const res = shared.createDto();
+            res.id = cast.int(dbUser?.id);
             res.lang = cast.string(dbUser?.language);
             res.nameFirst = cast.string(dbUser?.name_first);
             res.nameLast = cast.string(dbUser?.name_last);
@@ -52,6 +53,7 @@ export default class Dialog_Back_Convert_User {
         this.share2rdb = function ({user}) {
             const dbUser = rdbUser.createDto();
             const dbUserRole = rdbUserRole.createDto();
+            dbUser.id = cast.int(user?.id);
             dbUser.language = cast.string(user?.lang);
             dbUser.name_first = cast.string(user?.nameFirst);
             dbUser.name_last = cast.string(user?.nameLast);

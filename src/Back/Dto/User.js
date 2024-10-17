@@ -7,6 +7,11 @@
  * @memberOf Dialog_Back_Dto_User
  */
 class Dto {
+    /**
+     * Internal ID for the user.
+     * @type {number}
+     */
+    id;
     /** @type {string} */
     lang;
     /** @type {string} */
@@ -56,6 +61,7 @@ export default class Dialog_Back_Dto_User {
             const res = Object.assign(new Dto(), data);
 
             // Cast known attributes
+            res.id = cast.int(data?.id);
             res.lang = cast.string(data?.lang);
             res.nameFirst = cast.string(data?.nameFirst);
             res.nameLast = cast.string(data?.nameLast);

@@ -1,5 +1,49 @@
 {
   "entity": {
+    "service": {
+      "comment": "The registry of services offered by vendors.",
+      "attr": {
+        "id": {"type": "id"},
+        "user_ref": {
+          "type": "ref",
+          "comment": "The reference to the vendor who created the service."
+        },
+        "name": {"type": "string", "comment": "The name of the service."},
+        "description": {
+          "type": "text",
+          "comment": "Detailed description of the service."
+        },
+        "duration": {
+          "type": "integer",
+          "comment": "Duration of the service in minutes."
+        },
+        "date_created": {
+          "comment": "Date-time when the service record was created.",
+          "type": "datetime",
+          "default": "current"
+        },
+        "date_updated": {
+          "comment": "Date-time when the service record was last updated.",
+          "type": "datetime",
+          "default": "current"
+        },
+        "address": {
+          "type": "string",
+          "comment": "The address of the service.",
+          "nullable": true
+        }
+      },
+      "index": {
+        "name": {"type": "unique", "attrs": ["name", "user_ref"]}
+      },
+      "relation": {
+        "user": {
+          "attrs": ["user_ref"],
+          "ref": {"path": "/user", "attrs": ["id"]},
+          "action": {"delete": "cascade", "update": "cascade"}
+        }
+      }
+    },
     "user": {
       "comment": "The registry of the Telegram users.",
       "attr": {

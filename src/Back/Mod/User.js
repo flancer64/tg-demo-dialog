@@ -38,7 +38,7 @@ export default class Dialog_Back_Mod_User {
          * Create a new user
          * @param {Object} params
          * @param {Dialog_Back_Dto_User.Dto} params.dto
-         * @returns {Dialog_Back_Dto_User.Dto}
+         * @returns {Promise<Dialog_Back_Dto_User.Dto>}
          */
         this.create = async function ({dto}) {
             let res;
@@ -66,7 +66,7 @@ export default class Dialog_Back_Mod_User {
          * @param {Object} params - User data
          * @param {number} [params.id] - User ID
          * @param {number} [params.telegramId] - User ID
-         * @returns {Dialog_Back_Dto_User.Dto|null} - User DTO or null if not found
+         * @returns {Promise<Dialog_Back_Dto_User.Dto>} - User DTO or null if not found
          */
         this.read = async function ({id, telegramId}) {
             let res;
@@ -92,7 +92,7 @@ export default class Dialog_Back_Mod_User {
          * Update user data
          * @param {Object} params
          * @param {Dialog_Back_Dto_User.Dto} params.dto
-         * @returns {Dialog_Back_Dto_User.Dto|null} - Updated user DTO or null if not found
+         * @returns {Promise<Dialog_Back_Dto_User.Dto>} - Updated user DTO or null if not found
          */
         this.update = async function ({dto}) {
             let res;
@@ -116,40 +116,6 @@ export default class Dialog_Back_Mod_User {
             } catch (error) {
                 await trx.rollback();
                 logger.error(`Error updating user: ${error.message}`);
-                throw error;
-            }
-        };
-
-        /**
-         * Delete user by ID
-         * @param {number} id - User ID
-         * @returns {Dialog_Back_Dto_User.Dto|null} - Deleted user DTO or null if not found
-         */
-        this.delete = async function ({id}) {
-            try {
-                const user = store.delete(id);
-                if (user) {
-                    logger.info(`User ${user.id} deleted successfully.`);
-                    return user;
-                } else {
-                    logger.info(`User with ID ${id} not found.`);
-                    return null;
-                }
-            } catch (error) {
-                logger.error(`Error deleting user: ${error.message}`);
-                throw error;
-            }
-        };
-
-        /**
-         * List all users
-         * @returns {Array<Dialog_Back_Dto_User.Dto>} - List of all user DTOs
-         */
-        this.list = async function () {
-            try {
-                return store.list();
-            } catch (error) {
-                logger.error(`Error listing users: ${error.message}`);
                 throw error;
             }
         };

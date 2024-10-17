@@ -13,6 +13,7 @@ export default class Dialog_Back_Bot_Setup {
     /**
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
      * @param {Dialog_Back_Bot_Filter_Message} filterMessage
+     * @param {Dialog_Back_Bot_Dlg_Service_Create} dialogServiceCreate
      * @param {Dialog_Back_Bot_Dlg_Start} dialogStart
      * @param {Dialog_Back_Bot_Setup_A_HndlCmd|function} aHndlCmd
      * @param {typeof Dialog_Back_Bot_Command} CMD
@@ -22,6 +23,7 @@ export default class Dialog_Back_Bot_Setup {
         {
             TeqFw_Core_Shared_Api_Logger$$: logger,
             Dialog_Back_Bot_Filter_Message$: filterMessage,
+            Dialog_Back_Bot_Dlg_Service_Create$: dialogServiceCreate,
             Dialog_Back_Bot_Dlg_Start$: dialogStart,
             Dialog_Back_Bot_Setup_A_HndlCmd$: aHndlCmd,
             Dialog_Back_Bot_Command$: CMD,
@@ -56,6 +58,7 @@ export default class Dialog_Back_Bot_Setup {
             bot.use(conversations());
 
             // set up conversations
+            bot.use(createConversation(dialogServiceCreate, DLG.SERVICE_CREATE));
             bot.use(createConversation(dialogStart, DLG.START));
 
             // add command handlers

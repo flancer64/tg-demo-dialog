@@ -1,72 +1,75 @@
 /**
- *  DTO and Metadata for RDB entity: the user.
- *  @namespace Dialog_Back_Store_RDb_Schema_User
+ *  DTO and Metadata for RDB entity: the service.
+ *  @namespace Dialog_Back_Store_RDb_Schema_Service
  */
 // MODULE'S VARS
 /**
  * Path to the entity in plugin's DEM.
  * @type {string}
  */
-const ENTITY = '/user';
+const ENTITY = '/service';
 
 /**
- * @memberOf Dialog_Back_Store_RDb_Schema_User
+ * @memberOf Dialog_Back_Store_RDb_Schema_Service
  * @type {Object}
  */
 const ATTR = {
+    ADDRESS: 'address',
     DATE_CREATED: 'date_created',
+    DATE_UPDATED: 'date_updated',
+    DESCRIPTION: 'description',
+    DURATION: 'duration',
     ID: 'id',
-    LANGUAGE: 'language',
-    NAME_FIRST: 'name_first',
-    NAME_LAST: 'name_last',
-    TELEGRAM_ID: 'telegram_id',
-    USERNAME: 'username',
+    NAME: 'name',
+    USER_REF: 'user_ref',
 };
 Object.freeze(ATTR);
 
 // MODULE'S CLASSES
 /**
- * @memberOf Dialog_Back_Store_RDb_Schema_User
+ * @memberOf Dialog_Back_Store_RDb_Schema_Service
  */
 class Dto {
+    /**
+     * @type {string|null}
+     */
+    address = null; // nullable
     /**
      * @type {Date}
      */
     date_created;
     /**
-     * Telegram ID.
+     * @type {Date}
+     */
+    date_updated;
+    /**
+     * @type {string}
+     */
+    description;
+    /**
+     * @type {number}
+     */
+    duration;
+    /**
      * @type {number}
      */
     id;
     /**
      * @type {string}
      */
-    language;
+    name;
     /**
-     * @type {string}
-     */
-    name_first;
-    /**
-     * @type {string}
-     */
-    name_last;
-    /**
-     * The reference to the user in Telegram.
+     * The reference to the vendor who created the service.
      * @type {number}
      */
-    telegram_id;
-    /**
-     * User name from Telegram.
-     * @type {string}
-     */
-    username;
+    user_ref;
 }
 
 // noinspection JSClosureCompilerSyntax
 /**
  * @implements TeqFw_Db_Back_RDb_Meta_IEntity
  */
-export default class Dialog_Back_Store_RDb_Schema_User {
+export default class Dialog_Back_Store_RDb_Schema_Service {
     /**
      * @param {Dialog_Back_Defaults} DEF
      * @param {TeqFw_Db_Back_RDb_Schema_EntityBase} base
@@ -81,24 +84,25 @@ export default class Dialog_Back_Store_RDb_Schema_User {
     ) {
         // INSTANCE METHODS
         /**
-         * @param {Dialog_Back_Store_RDb_Schema_User.Dto} [data]
-         * @return {Dialog_Back_Store_RDb_Schema_User.Dto}
+         * @param {Dialog_Back_Store_RDb_Schema_Service.Dto} [data]
+         * @return {Dialog_Back_Store_RDb_Schema_Service.Dto}
          */
         this.createDto = function (data) {
             const res = new Dto();
+            res.address = cast.string(data?.address);
             res.date_created = cast.date(data?.date_created);
+            res.date_updated = cast.date(data?.date_updated);
+            res.description = cast.string(data?.description);
+            res.duration = cast.int(data?.duration);
             res.id = cast.int(data?.id);
-            res.language = cast.string(data?.language);
-            res.name_first = cast.string(data?.name_first);
-            res.name_last = cast.string(data?.name_last);
-            res.telegram_id = cast.int(data?.telegram_id);
-            res.username = cast.string(data?.username);
+            res.name = cast.string(data?.name);
+            res.user_ref = cast.int(data?.user_ref);
             return res;
         };
 
         /**
          * Set JSDoc return type, real code is in `TeqFw_Db_Back_RDb_Schema_EntityBase`.
-         * @return {typeof Dialog_Back_Store_RDb_Schema_User.ATTR}
+         * @return {typeof Dialog_Back_Store_RDb_Schema_Service.ATTR}
          */
         this.getAttributes = function () {};
 
@@ -111,4 +115,3 @@ export default class Dialog_Back_Store_RDb_Schema_User {
         );
     }
 }
-
