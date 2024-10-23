@@ -17,7 +17,7 @@ export default class Dialog_Back_Mod_User_A_Update {
         }
     ) {
         /**
-         * @param {Object} params - User data
+         * @param {Object} params
          * @param {TeqFw_Db_Back_RDb_ITrans} params.trx
          * @param {Dialog_Back_Store_RDb_Schema_User.Dto} [params.dbUser]
          * @param {Dialog_Back_Store_RDb_Schema_User_Role.Dto} params.dbUserRole

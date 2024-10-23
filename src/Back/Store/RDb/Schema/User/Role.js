@@ -1,5 +1,5 @@
 /**
- *  Metadata for RDB entity: the user's role.
+ *  DTO and Metadata for RDB entity: the user's role.
  *  @namespace Dialog_Back_Store_RDb_Schema_User_Role
  */
 // MODULE'S VARS

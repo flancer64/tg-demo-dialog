@@ -15,6 +15,7 @@ const Dialog_Back_Bot_Command = {
     VISIT_DELETE: 'visit_delete',        // Client cancels a visit
     VISIT_LIST: 'visit_list',            // Client views their visits, Vendor views all visits to their services
     VISIT_QUEUE: 'visit_queue',          // Vendor views requests for visits
+    VISIT_READ: 'visit_read',            // Client and Vendor read information about a visit
     VISIT_SERVICE: 'visit_service',      // Client registers for a service
 };
 

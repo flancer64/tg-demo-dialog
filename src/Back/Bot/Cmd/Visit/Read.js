@@ -1,41 +1,44 @@
-
 /**
- * The handler for 'service_read' command.
+ * The handler for 'visit_read' command.
  */
-export default class Dialog_Back_Bot_Cmd_Service_Read {
+export default class Dialog_Back_Bot_Cmd_Visit_Read {
     /**
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
      * @param {Dialog_Back_Util_Format} utilFormat
-     * @param {Dialog_Back_Mod_Service} modService
+     * @param {Dialog_Back_Mod_Visit} modVisit
      */
     constructor(
         {
             TeqFw_Core_Shared_Api_Logger$$: logger,
             Dialog_Back_Util_Format$: utilFormat,
-            Dialog_Back_Mod_Service$: modService,
+            Dialog_Back_Mod_Visit$: modVisit,
         }
     ) {
         return async (ctx) => {
-            let msg = 'The command service_read has not been processed.';
+            let msg = 'The command visit_read has not been processed.';
             const from = ctx.from;
             logger.info(`Command has been received from user '${from.username}' (id:${from.id})`);
             try {
                 const parts = ctx.message.text.split(' ');
                 const id = parts[1];
-                const found = await modService.read({id});
+                const found = await modVisit.read({id});
                 if (found) {
                     msg = `
-Service Details:
+Visit Details:
 
 ID: <b>${found.id}</b>
-Name: <b>${found.name}</b>
-Description: <b>${found.description}</b>
-Duration (minutes): <b>${found.duration}</b>
-Address: <b>${found.address}</b>
-Date Created: <b>${utilFormat.dateTime(found.dateCreated)}</b>`;
-                    logger.info(`Details have been read for service #${found.id}.`);
+Created: <b>${utilFormat.dateTimeShort(found.dateCreated)}</b>
+Visit Date: <b>${utilFormat.dateTimeShort(found.dateVisit)}</b>
+Customer Name: <b>${found.customerName}</b>
+Service ID: <b>${found.serviceRef}</b>
+Service Name: <b>${found.serviceName}</b>
+Duration (minutes): <b>${found.serviceDuration}</b>
+Vendor ID: <b>${found.vendorRef}</b>
+Vendor Name: <b>${found.vendorName}</b>
+`;
+                    logger.info(`Details have been read for visit #${found.id}.`);
                 } else {
-                    msg = `No service found with the specified ID (${id}).`;
+                    msg = `No visit found with the specified ID (${id}).`;
                     logger.info(msg);
                 }
             } catch (e) {

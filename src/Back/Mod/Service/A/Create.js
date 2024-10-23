@@ -19,7 +19,7 @@ export default class Dialog_Back_Mod_Service_A_Create {
 
         // MAIN
         /**
-         * @param {Object} params - Service data
+         * @param {Object} params
          * @param {TeqFw_Db_Back_RDb_ITrans} params.trx
          * @param {Dialog_Back_Store_RDb_Schema_Service.Dto} params.dbService
          *

@@ -30,7 +30,7 @@ export default class Dialog_Back_Mod_User_A_Read {
          */
 
         /**
-         * @param {Object} params - User data
+         * @param {Object} params
          * @param {TeqFw_Db_Back_RDb_ITrans} params.trx
          * @param {number} [params.id]
          * @param {number} [params.telegramId]

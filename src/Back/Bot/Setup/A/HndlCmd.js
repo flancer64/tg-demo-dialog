@@ -16,7 +16,9 @@ export default class Dialog_Back_Bot_Setup_A_HndlCmd {
      * @param {Dialog_Back_Bot_Cmd_Visit_Delete} cmdVisitDelete
      * @param {Dialog_Back_Bot_Cmd_Visit_List} cmdVisitList
      * @param {Dialog_Back_Bot_Cmd_Visit_Queue} cmdVisitQueue
+     * @param {Dialog_Back_Bot_Cmd_Visit_Read} cmdVisitRead
      * @param {Dialog_Back_Bot_Cmd_Visit_Service} cmdVisitService
+     * @param {typeof Dialog_Back_Bot_Callback} CB
      * @param {typeof Dialog_Back_Bot_Command} CMD
      *
      * @return {function(bot:Bot): void} Returns a function that registers the command handlers with the bot
@@ -36,7 +38,9 @@ export default class Dialog_Back_Bot_Setup_A_HndlCmd {
             Dialog_Back_Bot_Cmd_Visit_Delete$: cmdVisitDelete,
             Dialog_Back_Bot_Cmd_Visit_List$: cmdVisitList,
             Dialog_Back_Bot_Cmd_Visit_Queue$: cmdVisitQueue,
+            Dialog_Back_Bot_Cmd_Visit_Read$: cmdVisitRead,
             Dialog_Back_Bot_Cmd_Visit_Service$: cmdVisitService,
+            Dialog_Back_Bot_Callback$: CB,
             Dialog_Back_Bot_Command$: CMD,
         }
     ) {
@@ -54,7 +58,19 @@ export default class Dialog_Back_Bot_Setup_A_HndlCmd {
             bot.command(CMD.VISIT_DELETE, cmdVisitDelete);
             bot.command(CMD.VISIT_LIST, cmdVisitList);
             bot.command(CMD.VISIT_QUEUE, cmdVisitQueue);
+            bot.command(CMD.VISIT_READ, cmdVisitRead);
             bot.command(CMD.VISIT_SERVICE, cmdVisitService);
+
+            bot.callbackQuery(CB.CMD_SERVICE_CREATE, (ctx) => {
+                ctx.answerCallbackQuery().catch();
+                cmdServiceCreate(ctx).catch();
+            });
+
+            bot.callbackQuery(CB.CMD_SERVICE_LIST, (ctx) => {
+                ctx.answerCallbackQuery().catch();
+                ctx.conversation.exit().then();
+                cmdServiceList(ctx).catch();
+            });
         };
     }
 }

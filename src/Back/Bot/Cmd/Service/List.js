@@ -15,7 +15,7 @@ export default class Dialog_Back_Bot_Cmd_Service_List {
     ) {
         return async (ctx) => {
             let msg = 'The command service_list has not been processed.';
-            const from = ctx.message.from;
+            const from = ctx.from;
             logger.info(`Command has been received from user '${from.username}' (id:${from.id})`);
             try {
                 const rs = await modService.list();

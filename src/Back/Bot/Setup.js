@@ -15,7 +15,9 @@ export default class Dialog_Back_Bot_Setup {
      * @param {Dialog_Back_Bot_Filter_Message} filterMessage
      * @param {Dialog_Back_Bot_Dlg_Service_Create} dialogServiceCreate
      * @param {Dialog_Back_Bot_Dlg_Start} dialogStart
+     * @param {Dialog_Back_Bot_Dlg_Visit_Service} dialogVisitService
      * @param {Dialog_Back_Bot_Setup_A_HndlCmd|function} aHndlCmd
+     * @param {typeof Dialog_Back_Bot_Callback} CB
      * @param {typeof Dialog_Back_Bot_Command} CMD
      * @param {typeof Dialog_Back_Bot_Dialog} DLG
      */
@@ -25,7 +27,9 @@ export default class Dialog_Back_Bot_Setup {
             Dialog_Back_Bot_Filter_Message$: filterMessage,
             Dialog_Back_Bot_Dlg_Service_Create$: dialogServiceCreate,
             Dialog_Back_Bot_Dlg_Start$: dialogStart,
+            Dialog_Back_Bot_Dlg_Visit_Service$: dialogVisitService,
             Dialog_Back_Bot_Setup_A_HndlCmd$: aHndlCmd,
+            Dialog_Back_Bot_Callback$: CB,
             Dialog_Back_Bot_Command$: CMD,
             Dialog_Back_Bot_Dialog$: DLG,
         }
@@ -46,6 +50,7 @@ export default class Dialog_Back_Bot_Setup {
                 {command: CMD.VISIT_DELETE, description: 'Cancel a scheduled visit.'},
                 {command: CMD.VISIT_LIST, description: 'View your visits or all visits to services (for vendors).'},
                 {command: CMD.VISIT_QUEUE, description: 'View visit requests (for vendors).'},
+                {command: CMD.VISIT_READ, description: 'View details about a visit.'},
                 {command: CMD.VISIT_SERVICE, description: 'Register for a service (for clients).'},
             ]);
             logger.info(`A total of ${Object.keys(CMD).length} commands have been set for the bot.`);
@@ -57,9 +62,22 @@ export default class Dialog_Back_Bot_Setup {
             bot.use(session({initial: () => ({})}));
             bot.use(conversations());
 
+            bot.use(async (ctx, next) => {
+                const message = ctx.message;
+                if (message) {
+                    const user = message.from.username;
+                    const userId = message.from.id;
+                    const msgId = message.message_id;
+                    const chatId = message.chat.id;
+                    logger.info(`[${chatId}][${msgId}][${user}][${userId}] ${message?.text}`);
+                }
+                await next();
+            });
+
             // set up conversations
             bot.use(createConversation(dialogServiceCreate, DLG.SERVICE_CREATE));
             bot.use(createConversation(dialogStart, DLG.START));
+            bot.use(createConversation(dialogVisitService, DLG.VISIT_SERVICE));
 
             // add command handlers
             aHndlCmd(bot);

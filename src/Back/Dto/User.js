@@ -1,5 +1,5 @@
 /**
- * The user data structure.
+ * The user data structure for Business Logic (Domain DTO).
  */
 
 // MODULE'S CLASSES

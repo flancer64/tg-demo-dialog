@@ -4,7 +4,8 @@
 export default class Dialog_Back_Bot_Cmd_Help {
     constructor() {
         return async (ctx) => {
-            const from = ctx.message.from;
+            const from = ctx.from;
+            const msgId = ctx.msg.id;
             const msgDef = `
 This is a test bot for demo.
 

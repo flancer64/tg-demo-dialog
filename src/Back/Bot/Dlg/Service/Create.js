@@ -42,17 +42,11 @@ export default class Dialog_Back_Bot_Dlg_Service_Create {
                 let user = await conversation.external(
                     () => modUser.read({telegramId})
                 );
-                if (!user) {
-                    msg += `\nYou're not registered user. Please, use the /start command for beginning.`;
+                if (!user?.role === ROLE.VENDOR) {
+                    msg += `\nYou're not allowed to create services. Please, use the /start command for beginning.`;
                     await ctx.reply(msg);
                     return;
                 } else {
-                    if (user.role !== ROLE.VENDOR) {
-                        msg += `\nYou're not allowed to create services. Please, use the /start command for beginning.`;
-                        await ctx.reply(msg);
-                        return;
-                    }
-
                     // Start gathering service data
                     const dto = modService.composeEntity();
                     dto.userId = user.id;
@@ -67,11 +61,16 @@ export default class Dialog_Back_Bot_Dlg_Service_Create {
 
                     // Ask for the service duration
                     await ctx.reply('Please enter the duration of the service (in minutes):');
-                    dto.duration = await conversation.form.int({radix: 10});
-                    if (isNaN(dto.duration) || dto.duration <= 0) {
-                        await ctx.reply('Invalid duration. Please enter a valid number.');
-                        return; // TODO use do-while here
-                    }
+                    do {
+                        dto.duration = await conversation.form.int({
+                            radix: 10, otherwise: async (ctx) => {
+                                await ctx.reply('Invalid duration. Please enter a valid number.');
+                            }
+                        });
+                        if (isNaN(dto.duration) || dto.duration <= 0) {
+                            await ctx.reply('Invalid duration. Please enter a valid number.');
+                        }
+                    } while ((isNaN(dto.duration) || dto.duration <= 0));
 
                     // Ask for the service address
                     await ctx.reply('Please enter the service address:');

@@ -15,7 +15,11 @@ export default class Dialog_Back_Bot_Filter_Message {
         }
     ) {
         return async (ctx) => {
-            ctx.reply('An unknown message has been received.').catch(logger.exception);
+            // ctx.reply('An unknown message has been received.').catch(logger.exception);
+            const user = ctx.from.username;
+            const userId = ctx.from.id;
+            const txt = ctx.msg.text;
+            logger.info(`An unknown message has been received from user '${user}' (id:${userId}): ${txt}`);
         };
     }
 }

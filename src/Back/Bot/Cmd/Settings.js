@@ -4,7 +4,7 @@
 export default class Dialog_Back_Bot_Cmd_Settings {
     constructor() {
         return async (ctx) => {
-            const from = ctx.message.from;
+            const from = ctx.from;
             const msgDef = `
 SETTINGS
 `;
