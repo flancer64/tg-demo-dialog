@@ -12,6 +12,7 @@ import {conversations, createConversation} from '@grammyjs/conversations';
 export default class Dialog_Back_Bot_Setup {
     /**
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
+     * @param {Telegram_Bot_Back_Mod_Mdlwr_Log} mwLog
      * @param {Dialog_Back_Bot_Filter_Message} filterMessage
      * @param {Dialog_Back_Bot_Dlg_Service_Create} dialogServiceCreate
      * @param {Dialog_Back_Bot_Dlg_Start} dialogStart
@@ -24,6 +25,7 @@ export default class Dialog_Back_Bot_Setup {
     constructor(
         {
             TeqFw_Core_Shared_Api_Logger$$: logger,
+            Telegram_Bot_Back_Mod_Mdlwr_Log$: mwLog,
             Dialog_Back_Bot_Filter_Message$: filterMessage,
             Dialog_Back_Bot_Dlg_Service_Create$: dialogServiceCreate,
             Dialog_Back_Bot_Dlg_Start$: dialogStart,
@@ -58,32 +60,26 @@ export default class Dialog_Back_Bot_Setup {
         };
 
         this.handlers = function (bot) {
+            // add command handlers
+            aHndlCmd(bot);
+
+            // add other handlers
+            bot.on('message', filterMessage);
+            return bot;
+        };
+
+        this.middleware = function (bot) {
             // set up middleware
+            bot.use(mwLog.create());
+
             bot.use(session({initial: () => ({})}));
             bot.use(conversations());
-
-            bot.use(async (ctx, next) => {
-                const message = ctx.message;
-                if (message) {
-                    const user = message.from.username;
-                    const userId = message.from.id;
-                    const msgId = message.message_id;
-                    const chatId = message.chat.id;
-                    logger.info(`[${chatId}][${msgId}][${user}][${userId}] ${message?.text}`);
-                }
-                await next();
-            });
 
             // set up conversations
             bot.use(createConversation(dialogServiceCreate, DLG.SERVICE_CREATE));
             bot.use(createConversation(dialogStart, DLG.START));
             bot.use(createConversation(dialogVisitService, DLG.VISIT_SERVICE));
 
-            // add command handlers
-            aHndlCmd(bot);
-
-            // add other handlers
-            bot.on('message', filterMessage);
             return bot;
         };
     }
