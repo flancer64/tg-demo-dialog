@@ -8,6 +8,7 @@ const Dialog_Back_Enum_Bot_Command = {
     SERVICE_LIST: 'service_list',        // Client and Vendor view the list of all services
     SERVICE_READ: 'service_read',        // Client and Vendor read information about a service
     SERVICE_UPDATE: 'service_update',    // Vendor updates service information
+    SET_MODE: 'set_mode',                // Set running mode for the bot (customer or vendor)
     SETTINGS: 'settings',                // User settings
     START: 'start',                      // Starts the bot, user role selection
     VISIT_APPROVE: 'visit_approve',      // Vendor approves a client's visit request

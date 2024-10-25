@@ -13,6 +13,7 @@ export default class Dialog_Back_Bot_Setup {
     /**
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
      * @param {Telegram_Bot_Back_Mod_Mdlwr_Log} mwLog
+     * @param {Telegram_Bot_Back_Mod_Handler_Callback_Query_Data} hndlCallbackData
      * @param {Dialog_Back_Bot_Filter_Message} filterMessage
      * @param {Dialog_Back_Bot_Conv_Service_Create} dialogServiceCreate
      * @param {Dialog_Back_Bot_Conv_Start} dialogStart
@@ -26,6 +27,7 @@ export default class Dialog_Back_Bot_Setup {
         {
             TeqFw_Core_Shared_Api_Logger$$: logger,
             Telegram_Bot_Back_Mod_Mdlwr_Log$: mwLog,
+            Telegram_Bot_Back_Mod_Handler_Callback_Query_Data$: hndlCallbackData,
             Dialog_Back_Bot_Filter_Message$: filterMessage,
             Dialog_Back_Bot_Conv_Service_Create$: dialogServiceCreate,
             Dialog_Back_Bot_Conv_Start$: dialogStart,
@@ -102,6 +104,7 @@ The goal is to test the idea and gather feedback.
             aHndlCmd(bot);
 
             // add other handlers
+            bot.on('callback_query:data', hndlCallbackData.handle);
             bot.on('message', filterMessage);
         };
 

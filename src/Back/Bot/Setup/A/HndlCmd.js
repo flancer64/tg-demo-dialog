@@ -9,6 +9,7 @@ export default class Dialog_Back_Bot_Setup_A_HndlCmd {
      * @param {Dialog_Back_Bot_Cmd_Service_List} cmdServiceList
      * @param {Dialog_Back_Bot_Cmd_Service_Read} cmdServiceRead
      * @param {Dialog_Back_Bot_Cmd_Service_Update} cmdServiceUpdate
+     * @param {Dialog_Back_Bot_Cmd_Set_Mode} cmdSetMode
      * @param {Dialog_Back_Bot_Cmd_Settings} cmdSettings
      * @param {Dialog_Back_Bot_Cmd_Start} cmdStart
      * @param {Dialog_Back_Bot_Cmd_Visit_Approve} cmdVisitApprove
@@ -31,6 +32,7 @@ export default class Dialog_Back_Bot_Setup_A_HndlCmd {
             Dialog_Back_Bot_Cmd_Service_List$: cmdServiceList,
             Dialog_Back_Bot_Cmd_Service_Read$: cmdServiceRead,
             Dialog_Back_Bot_Cmd_Service_Update$: cmdServiceUpdate,
+            Dialog_Back_Bot_Cmd_Set_Mode$: cmdSetMode,
             Dialog_Back_Bot_Cmd_Settings$: cmdSettings,
             Dialog_Back_Bot_Cmd_Start$: cmdStart,
             Dialog_Back_Bot_Cmd_Visit_Approve$: cmdVisitApprove,
@@ -51,6 +53,7 @@ export default class Dialog_Back_Bot_Setup_A_HndlCmd {
             bot.command(CMD.SERVICE_LIST, cmdServiceList);
             bot.command(CMD.SERVICE_READ, cmdServiceRead);
             bot.command(CMD.SERVICE_UPDATE, cmdServiceUpdate);
+            bot.command(CMD.SET_MODE, cmdSetMode);
             bot.command(CMD.SETTINGS, cmdSettings);
             bot.command(CMD.START, cmdStart);
             bot.command(CMD.VISIT_APPROVE, cmdVisitApprove);
