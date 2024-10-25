@@ -1,10 +1,9 @@
 /**
  * The codifier for user roles.
  */
-const Dialog_Back_Enum_User_Role = {
+const Dialog_Back_Enum_User_Role = Object.freeze({
     CUSTOMER: 'CUSTOMER',
     VENDOR: 'VENDOR',
-};
+});
 
-Object.freeze(Dialog_Back_Enum_User_Role);
 export default Dialog_Back_Enum_User_Role;

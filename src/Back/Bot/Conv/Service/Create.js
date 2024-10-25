@@ -5,7 +5,7 @@
 import {InlineKeyboard} from 'grammy';
 
 // CLASSES
-export default class Dialog_Back_Bot_Dlg_Service_Create {
+export default class Dialog_Back_Bot_Conv_Service_Create {
     /**
      * @param {TeqFw_Core_Shared_Api_Logger} logger
      * @param {Dialog_Back_Mod_Service} modService

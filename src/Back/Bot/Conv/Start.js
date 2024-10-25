@@ -5,7 +5,7 @@
 import {InlineKeyboard} from 'grammy';
 
 // CLASSES
-export default class Dialog_Back_Bot_Dlg_Start {
+export default class Dialog_Back_Bot_Conv_Start {
     /**
      * @param {TeqFw_Core_Shared_Api_Logger} logger
      * @param {Dialog_Back_Mod_User} modUser
@@ -39,9 +39,7 @@ export default class Dialog_Back_Bot_Dlg_Start {
 
                 // Check if the user already exists in the system
                 /** @type {Dialog_Back_Dto_User.Dto} */
-                let user = await conversation.external(
-                    () => modUser.read({telegramId})
-                );
+                let user = await modUser.read({telegramId})
                 if (!user) {
                     user = modUser.composeEntity();
                     user.lang = ctx.from.language_code;
@@ -51,7 +49,7 @@ export default class Dialog_Back_Bot_Dlg_Start {
                     user.telegramId = telegramId;
                     user.username = username;
                     user = await conversation.external(
-                        () => modUser.create({dto: user})
+                        async () => modUser.create({dto: user})
                     );
                     msg += `\nYou're a new user and your current role is: '${ROLE_NAME[user.role]}'.`;
                 } else {
@@ -93,26 +91,21 @@ export default class Dialog_Back_Bot_Dlg_Start {
                 );
 
 
-                const cbCtxCmd = await conversation.waitForCallbackQuery(Object.values(ROLE));
+                const cbCtxCmd = await conversation.waitForCallbackQuery([
+                    CALLBACK.CMD_SERVICE_LIST,
+                    CALLBACK.CMD_SERVICE_CREATE,
+                ]);
                 if (cbCtxCmd) {
 
-                    const roleSelected = cbCtx?.callbackQuery?.data;
-
-                    // If the selected role is different, update the user's role
-                    if (roleSelected !== user.role) {
-                        user.role = roleSelected;
-                        user = await conversation.external(
-                            () => modUser.update({dto: user})
-                        );
-                        // TODO: change help & menu for the user
-                    }
+                    const actSelected = cbCtxCmd?.callbackQuery?.data;
 
                     // Disable the blinking effect of the inline button on UI
-                    await cbCtx.editMessageReplyMarkup();
+                    await cbCtxCmd.editMessageReplyMarkup();
                 }
 
 
             } catch (e) {
+                conversation?.exit();
                 await ctx.reply(`Error while processing: ${e}`);
                 logger.exception(e);
             }

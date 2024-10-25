@@ -53,6 +53,18 @@
         "name_first": {"type": "string", "comment": "The first name from Telegram."},
         "name_last": {"type": "string", "comment": "The last name from Telegram."},
         "language": {"type": "string", "comment": "The language code from Telegram."},
+        "status": {
+          "type": "enum",
+          "options": {
+            "values": [
+              "ACTIVE",
+              "INACTIVE",
+              "BLOCKED"
+            ]
+          },
+          "default": "ACTIVE",
+          "comment": "The status of the user."
+        },
         "date_created": {
           "comment": "Date-time when record was created.",
           "type": "datetime",

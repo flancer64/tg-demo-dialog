@@ -25,6 +25,11 @@ class Dto {
      */
     role;
     /**
+     * @type {string}
+     * @see Dialog_Back_Enum_User_Status
+     */
+    status;
+    /**
      * Telegram user ID.
      * @type {number}
      */
@@ -43,11 +48,13 @@ export default class Dialog_Back_Dto_User {
     /**
      * @param {TeqFw_Core_Shared_Util_Cast} cast
      * @param {typeof Dialog_Back_Enum_User_Role} ROLE
+     * @param {typeof Dialog_Back_Enum_User_Status} STATUS
      */
     constructor(
         {
             TeqFw_Core_Shared_Util_Cast$: cast,
             Dialog_Back_Enum_User_Role$: ROLE,
+            Dialog_Back_Enum_User_Status$: STATUS,
         }
     ) {
         // INSTANCE METHODS
@@ -66,6 +73,7 @@ export default class Dialog_Back_Dto_User {
             res.nameFirst = cast.string(data?.nameFirst);
             res.nameLast = cast.string(data?.nameLast);
             res.role = cast.enum(data?.role, ROLE);
+            res.status = cast.enum(data?.status, STATUS);
             res.telegramId = cast.int(data?.telegramId);
             res.username = cast.string(data?.username);
 

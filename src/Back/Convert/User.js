@@ -9,6 +9,7 @@ export default class Dialog_Back_Convert_User {
      * @param {Dialog_Back_Store_RDb_Schema_User} rdbUser
      * @param {Dialog_Back_Store_RDb_Schema_User_Role} rdbUserRole
      * @param {typeof Dialog_Back_Enum_User_Role} ROLE
+     * @param {typeof Dialog_Back_Enum_User_Status} STATUS
      */
     constructor(
         {
@@ -17,6 +18,7 @@ export default class Dialog_Back_Convert_User {
             Dialog_Back_Store_RDb_Schema_User$: rdbUser,
             Dialog_Back_Store_RDb_Schema_User_Role$: rdbUserRole,
             Dialog_Back_Enum_User_Role$: ROLE,
+            Dialog_Back_Enum_User_Status$: STATUS,
         }
     ) {
         // INSTANCE METHODS
@@ -33,6 +35,7 @@ export default class Dialog_Back_Convert_User {
             res.nameFirst = cast.string(dbUser?.name_first);
             res.nameLast = cast.string(dbUser?.name_last);
             res.role = cast.enum(dbUserRole?.role, ROLE);
+            res.status = cast.enum(dbUser?.status, STATUS);
             res.telegramId = cast.int(dbUser?.telegram_id);
             res.username = cast.string(dbUser?.username);
             return res;
@@ -57,6 +60,7 @@ export default class Dialog_Back_Convert_User {
             dbUser.language = cast.string(user?.lang);
             dbUser.name_first = cast.string(user?.nameFirst);
             dbUser.name_last = cast.string(user?.nameLast);
+            dbUser.status = cast.enum(user?.status, STATUS);
             dbUser.telegram_id = cast.int(user?.telegramId);
             dbUser.username = cast.string(user?.username);
             dbUserRole.role = cast.enum(user?.role, ROLE);

@@ -13,16 +13,16 @@ const ENTITY = '/user';
  * @memberOf Dialog_Back_Store_RDb_Schema_User
  * @type {Object}
  */
-const ATTR = {
+const ATTR = Object.freeze({
     DATE_CREATED: 'date_created',
     ID: 'id',
     LANGUAGE: 'language',
     NAME_FIRST: 'name_first',
     NAME_LAST: 'name_last',
+    STATUS: 'status',
     TELEGRAM_ID: 'telegram_id',
     USERNAME: 'username',
-};
-Object.freeze(ATTR);
+});
 
 // MODULE'S CLASSES
 /**
@@ -51,6 +51,11 @@ class Dto {
      */
     name_last;
     /**
+     * @type {string}
+     * @see Dialog_Back_Enum_User_Status
+     */
+    status;
+    /**
      * The reference to the user in Telegram.
      * @type {number}
      */
@@ -71,12 +76,14 @@ export default class Dialog_Back_Store_RDb_Schema_User {
      * @param {Dialog_Back_Defaults} DEF
      * @param {TeqFw_Db_Back_RDb_Schema_EntityBase} base
      * @param {TeqFw_Core_Shared_Util_Cast} cast
+     * @param {typeof Dialog_Back_Enum_User_Status} STATUS
      */
     constructor(
         {
             Dialog_Back_Defaults$: DEF,
             TeqFw_Db_Back_RDb_Schema_EntityBase$: base,
             TeqFw_Core_Shared_Util_Cast$: cast,
+            Dialog_Back_Enum_User_Status$: STATUS,
         }
     ) {
         // INSTANCE METHODS
@@ -91,6 +98,7 @@ export default class Dialog_Back_Store_RDb_Schema_User {
             res.language = cast.string(data?.language);
             res.name_first = cast.string(data?.name_first);
             res.name_last = cast.string(data?.name_last);
+            res.status = cast.enum(data?.status, STATUS);
             res.telegram_id = cast.int(data?.telegram_id);
             res.username = cast.string(data?.username);
             return res;
