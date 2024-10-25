@@ -18,9 +18,9 @@ export default class Dialog_Back_Bot_Setup {
      * @param {Dialog_Back_Bot_Conv_Start} dialogStart
      * @param {Dialog_Back_Bot_Conv_Visit_Service} dialogVisitService
      * @param {Dialog_Back_Bot_Setup_A_HndlCmd|function} aHndlCmd
-     * @param {typeof Dialog_Back_Bot_Callback} CB
-     * @param {typeof Dialog_Back_Bot_Command} CMD
-     * @param {typeof Dialog_Back_Bot_Dialog} DLG
+     * @param {typeof Dialog_Back_Enum_Bot_Callback} CB
+     * @param {typeof Dialog_Back_Enum_Bot_Command} CMD
+     * @param {typeof Dialog_Back_Enum_Bot_Conv} DLG
      */
     constructor(
         {
@@ -31,9 +31,9 @@ export default class Dialog_Back_Bot_Setup {
             Dialog_Back_Bot_Conv_Start$: dialogStart,
             Dialog_Back_Bot_Conv_Visit_Service$: dialogVisitService,
             Dialog_Back_Bot_Setup_A_HndlCmd$: aHndlCmd,
-            Dialog_Back_Bot_Callback$: CB,
-            Dialog_Back_Bot_Command$: CMD,
-            Dialog_Back_Bot_Dialog$: DLG,
+            Dialog_Back_Enum_Bot_Callback$: CB,
+            Dialog_Back_Enum_Bot_Command$: CMD,
+            Dialog_Back_Enum_Bot_Conv$: DLG,
         }
     ) {
         // INSTANCE METHODS

@@ -10,14 +10,14 @@ export default class Dialog_Back_Bot_Conv_Start {
      * @param {TeqFw_Core_Shared_Api_Logger} logger
      * @param {Dialog_Back_Mod_User} modUser
      * @param {typeof Dialog_Back_Enum_User_Role} ROLE
-     * @param {typeof Dialog_Back_Bot_Callback} CALLBACK
+     * @param {typeof Dialog_Back_Enum_Bot_Callback} CALLBACK
      */
     constructor(
         {
             TeqFw_Core_Shared_Api_Logger$$: logger,
             Dialog_Back_Mod_User$: modUser,
             Dialog_Back_Enum_User_Role$: ROLE,
-            Dialog_Back_Bot_Callback$: CALLBACK,
+            Dialog_Back_Enum_Bot_Callback$: CALLBACK,
         }
     ) {
         // Mapped role names for user-friendly display

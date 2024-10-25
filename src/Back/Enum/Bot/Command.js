@@ -1,7 +1,7 @@
 /**
  * The codifier for bot commands.
  */
-const Dialog_Back_Bot_Command = {
+const Dialog_Back_Enum_Bot_Command = {
     HELP: 'help',                        // Provides explanation of available commands
     SERVICE_CREATE: 'service_create',    // Vendor creates a new service
     SERVICE_DELETE: 'service_delete',    // Vendor deletes a service
@@ -19,5 +19,5 @@ const Dialog_Back_Bot_Command = {
     VISIT_SERVICE: 'visit_service',      // Client registers for a service
 };
 
-Object.freeze(Dialog_Back_Bot_Command);
-export default Dialog_Back_Bot_Command;
+Object.freeze(Dialog_Back_Enum_Bot_Command);
+export default Dialog_Back_Enum_Bot_Command;

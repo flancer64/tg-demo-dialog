@@ -4,12 +4,12 @@
 export default class Dialog_Back_Bot_Cmd_Visit_Service {
     /**
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
-     * @param {typeof Dialog_Back_Bot_Dialog} DLG
+     * @param {typeof Dialog_Back_Enum_Bot_Conv} DLG
      */
     constructor(
         {
             TeqFw_Core_Shared_Api_Logger$$: logger,
-            Dialog_Back_Bot_Dialog$: DLG,
+            Dialog_Back_Enum_Bot_Conv$: DLG,
         }
     ) {
         return async (ctx) => {
