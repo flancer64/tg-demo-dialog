@@ -1,4 +1,3 @@
-
 /**
  * The handler for 'service_read' command.
  */
@@ -15,13 +14,18 @@ export default class Dialog_Back_Bot_Cmd_Service_Read {
             Dialog_Back_Mod_Service$: modService,
         }
     ) {
-        return async (ctx) => {
+        /**
+         * @type {Telegram_Bot_Back_Api_Handler}
+         * @param {number} opts.serviceId
+         */
+        const res = async (ctx, opts = {}) => {
+            // FUNCS
+
+            // MAIN
             let msg = 'The command service_read has not been processed.';
-            const from = ctx.from;
-            logger.info(`Command has been received from user '${from.username}' (id:${from.id})`);
             try {
                 const parts = ctx.message.text.split(' ');
-                const id = parts[1];
+                const id = opts.serviceId ?? parseInt(parts[1]);
                 const found = await modService.read({id});
                 if (found) {
                     msg = `
@@ -47,5 +51,6 @@ Date Created: <b>${utilFormat.dateTime(found.dateCreated)}</b>`;
                 parse_mode: 'HTML',
             });
         };
+        return res;
     }
 }

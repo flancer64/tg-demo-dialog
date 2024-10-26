@@ -11,13 +11,15 @@ export default class Dialog_Back_Bot_Cmd_Set_Mode {
      * @param {Dialog_Back_Mod_User} modUser
      * @param {typeof Dialog_Back_Enum_User_Role} ROLE
      */
-    constructor({
-                    TeqFw_Core_Shared_Api_Logger$$: logger,
-                    Telegram_Bot_Back_Mod_Handler_Callback_Query_Data$: hndlCallbackData,
-                    Dialog_Back_Bot_Cmd_Help$: cmdHelp,
-                    Dialog_Back_Mod_User$: modUser,
-                    Dialog_Back_Enum_User_Role$: ROLE,
-                }) {
+    constructor(
+        {
+            TeqFw_Core_Shared_Api_Logger$$: logger,
+            Telegram_Bot_Back_Mod_Handler_Callback_Query_Data$: hndlCallbackData,
+            Dialog_Back_Bot_Cmd_Help$: cmdHelp,
+            Dialog_Back_Mod_User$: modUser,
+            Dialog_Back_Enum_User_Role$: ROLE,
+        }
+    ) {
         // Mapped role names for user-friendly display
         const ROLE_NAME = {
             [ROLE.CUSTOMER]: 'Customer',
@@ -43,7 +45,7 @@ export default class Dialog_Back_Bot_Cmd_Set_Mode {
                 hndlCallbackData.updateInlineKeyboard(roleKeyboard, ctx.message); // Update keyboard callback_data
 
                 // Send message with role selection keyboard
-                await ctx.reply(msg, {reply_markup: roleKeyboard}).catch(logger.exception);
+                await ctx.reply(msg, {reply_markup: roleKeyboard});
 
                 // Register a callback handler for role selection
                 hndlCallbackData.addHandler(async (callbackCtx) => {
