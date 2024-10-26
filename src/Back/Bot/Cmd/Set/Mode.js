@@ -7,16 +7,16 @@ export default class Dialog_Back_Bot_Cmd_Set_Mode {
     /**
      * @param {TeqFw_Core_Shared_Api_Logger} logger
      * @param {Telegram_Bot_Back_Mod_Handler_Callback_Query_Data} hndlCallbackData
+     * @param {Dialog_Back_Bot_Cmd_Help|Telegram_Bot_Back_Api_Handler} cmdHelp
      * @param {Dialog_Back_Mod_User} modUser
      * @param {typeof Dialog_Back_Enum_User_Role} ROLE
-     * @param {typeof Dialog_Back_Enum_User_Status} STATUS
      */
     constructor({
                     TeqFw_Core_Shared_Api_Logger$$: logger,
                     Telegram_Bot_Back_Mod_Handler_Callback_Query_Data$: hndlCallbackData,
+                    Dialog_Back_Bot_Cmd_Help$: cmdHelp,
                     Dialog_Back_Mod_User$: modUser,
                     Dialog_Back_Enum_User_Role$: ROLE,
-                    Dialog_Back_Enum_User_Status$: STATUS,
                 }) {
         // Mapped role names for user-friendly display
         const ROLE_NAME = {
@@ -52,7 +52,6 @@ export default class Dialog_Back_Bot_Cmd_Set_Mode {
                     if ([ROLE.CUSTOMER, ROLE.VENDOR].includes(selectedRole)) {
                         user.role = selectedRole;
                         await modUser.update({dto: user});
-
                         logger.info(`User ${telegramId} changed role to ${selectedRole}`);
                         await callbackCtx.answerCallbackQuery(); // just remove loading indicator
                         // await callbackCtx.answerCallbackQuery({
@@ -60,6 +59,7 @@ export default class Dialog_Back_Bot_Cmd_Set_Mode {
                         //     show_alert: true,
                         // });
                         await callbackCtx.editMessageText(`Your role is now set to '${ROLE_NAME[selectedRole]}'`);
+                        cmdHelp(ctx, {role: user.role}).catch(logger.exception);
                     } else {
                         logger.error(`Unexpected callback data received: ${selectedRole}`);
                         await callbackCtx.answerCallbackQuery({text: 'Invalid selection.', show_alert: true});

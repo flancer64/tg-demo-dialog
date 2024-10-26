@@ -8,7 +8,6 @@ export default class Dialog_Back_Bot_Cmd_Start {
      * @param {TeqFw_Core_Shared_Api_Logger} logger - logger instance
      * @param {Dialog_Back_Mod_User} modUser
      * @param {Dialog_Back_Bot_Cmd_Help|Telegram_Bot_Back_Api_Handler} cmdHelp
-     * @param {Dialog_Back_Bot_Cmd_Set_Mode|function():Promise} cmdSetMode
      * @param {typeof Dialog_Back_Enum_User_Status} STATUS
      */
     constructor(
@@ -16,7 +15,6 @@ export default class Dialog_Back_Bot_Cmd_Start {
             TeqFw_Core_Shared_Api_Logger$$: logger,
             Dialog_Back_Mod_User$: modUser,
             Dialog_Back_Bot_Cmd_Help$: cmdHelp,
-            Dialog_Back_Bot_Cmd_Set_Mode$: cmdSetMode,
             Dialog_Back_Enum_User_Status$: STATUS,
         }
     ) {
