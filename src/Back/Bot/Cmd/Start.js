@@ -7,6 +7,7 @@ export default class Dialog_Back_Bot_Cmd_Start {
     /**
      * @param {TeqFw_Core_Shared_Api_Logger} logger - logger instance
      * @param {Dialog_Back_Mod_User} modUser
+     * @param {Dialog_Back_Bot_Cmd_Help|Telegram_Bot_Back_Api_Handler} cmdHelp
      * @param {Dialog_Back_Bot_Cmd_Set_Mode|function():Promise} cmdSetMode
      * @param {typeof Dialog_Back_Enum_User_Status} STATUS
      */
@@ -14,6 +15,7 @@ export default class Dialog_Back_Bot_Cmd_Start {
         {
             TeqFw_Core_Shared_Api_Logger$$: logger,
             Dialog_Back_Mod_User$: modUser,
+            Dialog_Back_Bot_Cmd_Help$: cmdHelp,
             Dialog_Back_Bot_Cmd_Set_Mode$: cmdSetMode,
             Dialog_Back_Enum_User_Status$: STATUS,
         }
@@ -45,7 +47,7 @@ export default class Dialog_Back_Bot_Cmd_Start {
                 msg += `\nYou're a returning user.`;
             } else if (user.status === STATUS.BLOCKED) {
                 // Log blocked user attempting to interact
-                logger.warn(`Blocked user attempted interaction: ${telegramId} (@${username})`);
+                logger.info(`Blocked user attempted interaction: ${telegramId} (@${username})`);
                 msg += `\nYou're a blocked user.`;
             } else {
                 // Log existing active user
@@ -54,7 +56,7 @@ export default class Dialog_Back_Bot_Cmd_Start {
             }
             await ctx.reply(msg);
             if (user.status === STATUS.ACTIVE) {
-                cmdSetMode(ctx).catch(logger.exception);
+                cmdHelp(ctx, {role: user.role}).catch(logger.exception);
             }
         };
     }
