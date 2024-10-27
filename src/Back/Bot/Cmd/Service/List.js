@@ -25,8 +25,8 @@ export default class Dialog_Back_Bot_Cmd_Service_List {
             try {
                 // Retrieve the list of services
                 const services = await modService.list();
-                const servicesPerPage = 6; // Number of services per page
-                const btnInRow = 3; // Number of buttons in a row
+                const servicesPerPage = 4; // Number of services per page
+                const btnInRow = 2; // Number of buttons in a row
                 const totalPages = Math.ceil(services.length / servicesPerPage);
 
                 if (services.length > 0) {
@@ -65,7 +65,7 @@ export default class Dialog_Back_Bot_Cmd_Service_List {
                     // Update keyboard callback_data, add handler ID to the values
                     hndlCallbackData.updateInlineKeyboard(keyboard, ctx.message);
                     // Send message with the inline keyboard
-                    await ctx.reply(msg, {
+                    const sentMsg = await ctx.reply(msg, {
                         reply_markup: keyboard,
                         parse_mode: 'HTML',
                     });
@@ -92,7 +92,7 @@ export default class Dialog_Back_Bot_Cmd_Service_List {
                                 await cbCtx.reply('Invalid selection. Please try again.');
                             }
                         }
-                    }, ctx);
+                    }, ctx, {sentMsg, timeout: 60000});
                 } else {
                     // Send message if no services were found
                     await ctx.reply(msg, {
