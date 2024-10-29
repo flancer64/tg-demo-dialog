@@ -19,20 +19,20 @@
     "db-init": "node ./bin/tequila.mjs db-init",
     "db-reset": "node ./bin/tequila.mjs db-export -f ./var/data.json && node ./bin/tequila.mjs db-init && node ./bin/tequila.mjs db-import -f ./var/data.json ",
     "help": "node ./bin/tequila.mjs -h",
-    "start": "node ./bin/tequila.mjs tg-bot-start",
+    "start": "DEBUG=grammy:* node ./bin/tequila.mjs tg-bot-start",
     "stop": "node ./bin/tequila.mjs tg-bot-stop",
     "version": "node ./bin/tequila.mjs core-version",
-    "web-start": "node ./bin/tequila.mjs web-server-start",
+    "web-start": "DEBUG=grammy:* node ./bin/tequila.mjs web-server-start",
     "web-stop": "node ./bin/tequila.mjs web-server-stop"
   },
   "dependencies": {
     "@flancer32/teq-telegram-bot": "github:flancer32/teq-telegram-bot",
     "@grammyjs/conversations": "^1.2.0",
-    "@teqfw/db": "^0.22.1",
+    "@teqfw/db": ">=0.22.1 <1.0.0",
     "better-sqlite3": "^11.3.0"
   },
   "devDependencies": {
-    "@teqfw/test": "^0.20.1",
+    "@teqfw/test": ">=0.20.1 <1.0.0",
     "mocha": "^10.7.3"
   }
 }

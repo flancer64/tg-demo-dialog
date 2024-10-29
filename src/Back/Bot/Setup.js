@@ -2,7 +2,7 @@
  * Display the messages about the processing of an API request.
  */
 // IMPORTS
-import {session} from 'grammy';
+import {GrammyError, HttpError, session} from 'grammy';
 import {conversations, createConversation} from '@grammyjs/conversations';
 
 // CLASSES
@@ -21,7 +21,7 @@ export default class Dialog_Back_Bot_Setup {
      * @param {Dialog_Back_Bot_Setup_A_HndlCmd|function} aHndlCmd
      * @param {typeof Dialog_Back_Enum_Bot_Callback} CB
      * @param {typeof Dialog_Back_Enum_Bot_Command} CMD
-     * @param {typeof Dialog_Back_Enum_Bot_Conv} DLG
+     * @param {typeof Dialog_Back_Enum_Bot_Conv} CONV
      */
     constructor(
         {
@@ -35,7 +35,7 @@ export default class Dialog_Back_Bot_Setup {
             Dialog_Back_Bot_Setup_A_HndlCmd$: aHndlCmd,
             Dialog_Back_Enum_Bot_Callback$: CB,
             Dialog_Back_Enum_Bot_Command$: CMD,
-            Dialog_Back_Enum_Bot_Conv$: DLG,
+            Dialog_Back_Enum_Bot_Conv$: CONV,
         }
     ) {
         // INSTANCE METHODS
@@ -109,16 +109,63 @@ The goal is to test the idea and gather feedback.
         };
 
         this.middleware = function (bot) {
+            bot.api.config.use((prev, method, payload) => {
+                logger.info(`Method: ${method}`);
+                logger.info(`Payload: ${JSON.stringify(payload)}`);
+
+                return prev(method, payload)
+                    .then((result) => {
+                        logger.info(`Result: ${JSON.stringify(result)}`);
+                        return result;
+                    })
+                    .catch((err) => {
+                        if (err instanceof GrammyError) {
+                            logger.error(`Ошибка грамматики: ${err.description}`);
+                        } else if (err instanceof HttpError) {
+                            logger.error(`HTTP ошибка: ${err}`);
+                        } else {
+                            logger.error(`Unexpected Error: ${err}`);
+                        }
+                        throw err;
+                    });
+            });
+
+
             // set up middleware
             bot.use(mwLog.create());
+            logger.info(`Logging middleware is set`);
 
-            bot.use(session({initial: () => ({})}));
+            bot.use(session({
+                initial: () => ({
+                    conversation: {},  // Space for conversation data
+                    otherData: null    // Additional fields can be added as needed
+                })
+            }));
             bot.use(conversations());
 
+            // This middleware should be placed after `bot.use(conversations())`
+            // bot.use(async (ctx, next) => {
+            //     if (ctx?.chat && (typeof ctx?.conversation?.active === 'function')) {
+            //         const {start} = await ctx.conversation.active();
+            //         if (start >= 1) {
+            //             logger.info(`An active conversation exists.`);
+            //             const commandEntity = ctx.message?.entities?.find(entity => entity.type === 'bot_command');
+            //             if (commandEntity) {
+            //                 await ctx.conversation.exit(CONV.START);
+            //                 await ctx.reply(`The previous conversation has been closed.`);
+            //             }
+            //         }
+            //     }
+            //     await next();
+            // });
+
             // set up conversations
-            bot.use(createConversation(dialogServiceCreate, DLG.SERVICE_CREATE));
-            bot.use(createConversation(dialogStart, DLG.START));
-            bot.use(createConversation(dialogVisitService, DLG.VISIT_SERVICE));
+            // bot.use(createConversation(dialogServiceCreate, CONV.SERVICE_CREATE));
+            // logger.info(`Conversation '${CONV.SERVICE_CREATE}' is set.`);
+            // bot.use(createConversation(dialogStart, CONV.START));
+            // logger.info(`Conversation '${CONV.START}' is set.`);
+            bot.use(createConversation(dialogVisitService, CONV.VISIT_SERVICE));
+            logger.info(`Conversation '${CONV.VISIT_SERVICE}' is set.`);
         };
     }
 }

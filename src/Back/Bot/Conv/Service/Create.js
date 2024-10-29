@@ -20,17 +20,6 @@ export default class Dialog_Back_Bot_Conv_Service_Create {
             Dialog_Back_Enum_User_Role$: ROLE,
         }
     ) {
-        // Mapped role names for user-friendly display
-        const ROLE_NAME = {
-            [ROLE.CUSTOMER]: 'Customer',
-            [ROLE.VENDOR]: 'Vendor',
-        };
-
-        // Inline keyboard for role selection
-        const roleKeyboard = new InlineKeyboard()
-            .text(ROLE_NAME[ROLE.CUSTOMER], ROLE.CUSTOMER)
-            .text(ROLE_NAME[ROLE.VENDOR], ROLE.VENDOR);
-
         return async (conversation, ctx) => {
             try {
                 const telegramId = ctx.from.id;

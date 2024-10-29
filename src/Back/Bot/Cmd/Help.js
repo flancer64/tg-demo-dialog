@@ -20,10 +20,12 @@ export default class Dialog_Back_Bot_Cmd_Help {
     ) {
         /**
          * @type {Telegram_Bot_Back_Api_Handler}
+         * @param {Object} ctx
+         * @param {Object} [opts]
          * @param {string} opts.lang
          * @param {string} opts.role
          */
-        const res = async (ctx, opts = {}) => {
+        const res = async (ctx, {lang, role} = {}) => {
             // FUNCS
             async function loadRole(telegramId) {
                 const user = await modUser.read({telegramId});
@@ -32,8 +34,8 @@ export default class Dialog_Back_Bot_Cmd_Help {
 
             // MAIN
             const {id: telegramId, username, language_code} = ctx.from;
-            const msgRole = cast.enum(opts?.role, ROLE) ?? await loadRole(telegramId);
-            const msgLang = opts.lang ?? language_code;
+            const msgRole = cast.enum(role, ROLE) ?? await loadRole(telegramId);
+            const msgLang = lang ?? language_code;
 
             logger.info(`Make message for user ${telegramId} (@${username}).`);
 

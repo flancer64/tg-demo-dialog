@@ -18,6 +18,12 @@ export default class Dialog_Back_Bot_Cmd_Service_List {
             Dialog_Back_Mod_Service$: modService,
         }
     ) {
+        /**
+         * @type {Telegram_Bot_Back_Api_Handler}
+         * @param {Object} ctx
+         * @param {Object} [opts]
+         * @param {number} [opts.page]
+         */
         const res = async (ctx, {page}) => {
             page = page ?? 0;
             // Default message if no services are found
